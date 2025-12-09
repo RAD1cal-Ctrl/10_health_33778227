@@ -1,0 +1,7 @@
+home=http://localhost:8000/
+about=http://localhost:8000/about
+register=http://localhost:8000/users/register
+login=http://localhost:8000/users/login
+workouts_list=http://localhost:8000/workouts
+workouts_add=http://localhost:8000/workouts/add
+workouts_search=http://localhost:8000/workouts/search

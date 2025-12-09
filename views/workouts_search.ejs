@@ -1,0 +1,35 @@
+<h1>Search Workouts</h1>
+
+<form method="get" action="/workouts/search">
+  <label>Type contains:
+    <input type="text" name="type" value="<%= type %>">
+  </label>
+  <button type="submit">Search</button>
+</form>
+
+<p><a href="/workouts">Back to all workouts</a></p>
+
+<% if (type && workouts.length === 0) { %>
+  <p>No workouts found for "<%= type %>".</p>
+<% } %>
+
+<% if (workouts.length > 0) { %>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+      <th>Date</th>
+      <th>Type</th>
+      <th>Duration (min)</th>
+      <th>Intensity</th>
+      <th>Notes</th>
+    </tr>
+    <% workouts.forEach(function(w) { %>
+      <tr>
+        <td><%= w.workout_date.toISOString().slice(0,10) %></td>
+        <td><%= w.type %></td>
+        <td><%= w.duration_minutes || '' %></td>
+        <td><%= w.intensity || '' %></td>
+        <td><%= w.notes || '' %></td>
+      </tr>
+    <% }); %>
+  </table>
+<% } %>

@@ -1,0 +1,26 @@
+<h1>Your Workouts</h1>
+
+<p><a href="/workouts/add">Add a new workout</a> | <a href="/workouts/search">Search workouts</a></p>
+
+<% if (workouts.length === 0) { %>
+  <p>You have no workouts logged yet.</p>
+<% } else { %>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+      <th>Date</th>
+      <th>Type</th>
+      <th>Duration (min)</th>
+      <th>Intensity</th>
+      <th>Notes</th>
+    </tr>
+    <% workouts.forEach(function(w) { %>
+      <tr>
+        <td><%= w.workout_date.toISOString().slice(0,10) %></td>
+        <td><%= w.type %></td>
+        <td><%= w.duration_minutes || '' %></td>
+        <td><%= w.intensity || '' %></td>
+        <td><%= w.notes || '' %></td>
+      </tr>
+    <% }); %>
+  </table>
+<% } %>

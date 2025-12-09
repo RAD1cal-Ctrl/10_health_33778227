@@ -1,0 +1,30 @@
+<h1>Add Workout</h1>
+
+<form method="post" action="/workouts/add">
+  <label>Date:
+    <input type="date" name="workout_date" required>
+  </label><br>
+
+  <label>Type:
+    <input type="text" name="type" placeholder="e.g. Running, Gym, Football" required>
+  </label><br>
+
+  <label>Duration (minutes):
+    <input type="number" name="duration_minutes" min="0">
+  </label><br>
+
+  <label>Intensity:
+    <select name="intensity">
+      <option value="">-- select --</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+  </label><br>
+
+  <label>Notes:<br>
+    <textarea name="notes" rows="3" cols="40"></textarea>
+  </label><br>
+
+  <button type="submit">Save workout</button>
+</form>
