@@ -22,7 +22,8 @@ router.post('/register', async (req, res, next) => {
 
     global.db.query(sql, [username, first_name, last_name, email, hash], (err) => {
       if (err) return next(err);
-      res.redirect('/users/login');
+      const basePath = req.app.locals.basePath || '';
+      res.redirect(`${basePath}/users/login`);
     });
   } catch (err) {
     next(err);
@@ -59,14 +60,16 @@ router.post('/login', (req, res, next) => {
       role: user.role
     };
 
-    res.redirect('/');
+    const basePath = req.app.locals.basePath || '';
+    res.redirect(`${basePath}/`);
   });
 });
 
 // GET /users/logout
 router.get('/logout', (req, res) => {
+  const basePath = req.app.locals.basePath || '';
   req.session.destroy(() => {
-    res.redirect('/');
+    res.redirect(`${basePath}/`);
   });
 });
 

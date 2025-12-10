@@ -8,15 +8,15 @@
 <body>
   <header>
     <nav>
-      <a href="/">Home</a> |
-      <a href="/about">About</a> |
-      <a href="/workouts">Workouts</a> |
+      <a href="<%= basePath %>/">Home</a> |
+      <a href="<%= basePath %>/about">About</a> |
+      <a href="<%= basePath %>/workouts">Workouts</a> |
       <% if (!currentUser) { %>
-        <a href="/users/login">Login</a> |
-        <a href="/users/register">Register</a>
+        <a href="<%= basePath %>/users/login">Login</a> |
+        <a href="<%= basePath %>/users/register">Register</a>
       <% } else { %>
         <span>Hi, <%= currentUser.username %></span> |
-        <a href="/users/logout">Logout</a>
+        <a href="<%= basePath %>/users/logout">Logout</a>
       <% } %>
     </nav>
   </header>

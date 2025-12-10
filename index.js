@@ -1,4 +1,7 @@
 require('dotenv').config();
+const rawBasePath = process.env.HEALTH_BASE_PATH || '/';
+// '' for local '/', '/usr/288' for VM
+const BASE_PATH = rawBasePath === '/' ? '' : rawBasePath.replace(/\/$/, '');
 const express = require('express');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
@@ -54,15 +57,19 @@ app.use(
     secret: process.env.SESSION_SECRET || 'supersecretstring',
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 } // 1 hour
+    cookie: { maxAge: 1000 * 60 * 60 },
   })
 );
 
-// expose current user to all views
+// make current user + base path available in all views
 app.use((req, res, next) => {
   res.locals.currentUser = req.session.user || null;
+  res.locals.basePath = BASE_PATH;
   next();
 });
+
+// also available inside routes
+app.locals.basePath = BASE_PATH;
 
 // ROUTES
 app.use('/', mainRouter);

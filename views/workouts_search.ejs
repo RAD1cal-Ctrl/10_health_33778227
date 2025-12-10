@@ -1,13 +1,13 @@
 <h1>Search Workouts</h1>
 
-<form method="get" action="/workouts/search">
+<form method="get" action="<%= basePath %>/workouts/search">
   <label>Type contains:
     <input type="text" name="type" value="<%= type %>">
   </label>
   <button type="submit">Search</button>
 </form>
 
-<p><a href="/workouts">Back to all workouts</a></p>
+<p><a href="<%= basePath %>/workouts">Back to all workouts</a></p>
 
 <% if (type && workouts.length === 0) { %>
   <p>No workouts found for "<%= type %>".</p>

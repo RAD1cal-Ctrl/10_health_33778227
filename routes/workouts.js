@@ -4,7 +4,8 @@ const router = express.Router();
 // simple auth guard
 function redirectLogin(req, res, next) {
   if (!req.session.user) {
-    return res.redirect('/users/login');
+    const basePath = req.app.locals.basePath || '';
+    return res.redirect(`${basePath}/users/login`);
   }
   next();
 }
@@ -50,7 +51,8 @@ router.post('/add', redirectLogin, (req, res, next) => {
     ],
     (err) => {
       if (err) return next(err);
-      res.redirect('/workouts');
+      const basePath = req.app.locals.basePath || '';
+      res.redirect(`${basePath}/workouts`);
     }
   );
 });
