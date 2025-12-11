@@ -50,7 +50,10 @@ app.use(expressLayouts);
 app.use(express.urlencoded({ extended: false }));
 
 // static files (CSS etc) - we'll use this later
-app.use(mountPath || '/', express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
+if (mountPath) {
+  app.use(mountPath, express.static(path.join(__dirname, 'public')));
+}
 
 // sessions
 app.use(
@@ -72,10 +75,15 @@ app.use((req, res, next) => {
 // also available inside routes
 app.locals.basePath = BASE_PATH;
 
-// ROUTES (mounted on optional base path)
-app.use(mountPath || '/', mainRouter);
-app.use(`${mountPath}/users`, usersRouter);
-app.use(`${mountPath}/workouts`, workoutsRouter);
+// ROUTES (mounted on optional base path, plus root fallback)
+app.use('/', mainRouter);
+app.use('/users', usersRouter);
+app.use('/workouts', workoutsRouter);
+if (mountPath) {
+  app.use(mountPath, mainRouter);
+  app.use(`${mountPath}/users`, usersRouter);
+  app.use(`${mountPath}/workouts`, workoutsRouter);
+}
 
 // 404 handler (basic)
 app.use((req, res) => {
