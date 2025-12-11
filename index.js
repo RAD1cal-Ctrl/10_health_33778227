@@ -2,6 +2,7 @@ require('dotenv').config();
 const rawBasePath = process.env.HEALTH_BASE_PATH || '/';
 // '' for local '/', '/usr/288' for VM
 const BASE_PATH = rawBasePath === '/' ? '' : rawBasePath.replace(/\/$/, '');
+const mountPath = BASE_PATH || '';
 const express = require('express');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
@@ -49,7 +50,7 @@ app.use(expressLayouts);
 app.use(express.urlencoded({ extended: false }));
 
 // static files (CSS etc) - we'll use this later
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(mountPath || '/', express.static(path.join(__dirname, 'public')));
 
 // sessions
 app.use(
@@ -71,10 +72,10 @@ app.use((req, res, next) => {
 // also available inside routes
 app.locals.basePath = BASE_PATH;
 
-// ROUTES
-app.use('/', mainRouter);
-app.use('/users', usersRouter);
-app.use('/workouts', workoutsRouter);
+// ROUTES (mounted on optional base path)
+app.use(mountPath || '/', mainRouter);
+app.use(`${mountPath}/users`, usersRouter);
+app.use(`${mountPath}/workouts`, workoutsRouter);
 
 // 404 handler (basic)
 app.use((req, res) => {
@@ -82,5 +83,5 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Health app running at http://localhost:${PORT}`);
+  console.log(`Health app running at http://localhost:${PORT}${BASE_PATH || '/'}`);
 });

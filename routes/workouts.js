@@ -1,10 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
+const withBasePath = (req, path = '/') => {
+  const base = req.app.locals.basePath || '';
+  return path === '/' ? base || '/' : `${base}${path}`;
+};
+
 // simple auth guard
 function redirectLogin(req, res, next) {
   if (!req.session.user) {
-    return res.redirect('/users/login');
+    return res.redirect(withBasePath(req, '/users/login'));
   }
   next();
 }
@@ -50,7 +55,7 @@ router.post('/add', redirectLogin, (req, res, next) => {
     ],
     (err) => {
       if (err) return next(err);
-      res.redirect('/workouts');
+      res.redirect(withBasePath(req, '/workouts'));
     }
   );
 });

@@ -3,6 +3,11 @@ const bcrypt = require('bcrypt');
 
 const router = express.Router();
 
+const withBasePath = (req, path = '/') => {
+  const base = req.app.locals.basePath || '';
+  return path === '/' ? base || '/' : `${base}${path}`;
+};
+
 // GET /users/register
 router.get('/register', (req, res) => {
   res.render('register');
@@ -22,7 +27,7 @@ router.post('/register', async (req, res, next) => {
 
     global.db.query(sql, [username, first_name, last_name, email, hash], (err) => {
       if (err) return next(err);
-      res.redirect('/users/login');
+      res.redirect(withBasePath(req, '/users/login'));
     });
   } catch (err) {
     next(err);
@@ -59,14 +64,14 @@ router.post('/login', (req, res, next) => {
       role: user.role
     };
 
-    res.redirect('/');
+    res.redirect(withBasePath(req, '/'));
   });
 });
 
 // GET /users/logout
 router.get('/logout', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/');
+    res.redirect(withBasePath(req, '/'));
   });
 });
 
